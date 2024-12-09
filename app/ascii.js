@@ -86,5 +86,5 @@ app.get('/clock', (req, res) => {
 // Lancer le serveur
 const PORT = 8080;
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}/`);
+    console.log(`Server running`);
 });
