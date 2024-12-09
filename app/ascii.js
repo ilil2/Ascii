@@ -1,5 +1,8 @@
 const express = require('express');
 const app = express();
+const axios = require('axios');
+const cheerio = require('cheerio');
+const he = require('he');
 
 const asciiDigits = {
     '0': ["_____",
@@ -143,6 +146,23 @@ app.get('/epita' , (req, res) => {
 ....................................................................................................");
     res.end();
 });
+
+app.get('/epiquote' , async (req, res) => {
+    res.setHeader('Content-Type', 'text/plain'); // Réponse en texte brut
+    res.setHeader('Cache-Control', 'no-cache'); // Désactiver la mise en cache
+
+    const { data } = await axios.get("https://epiquote.fr/random"); // Récupère le HTML de la page
+    const $ = cheerio.load(data);
+
+    let blockquoteText = $('blockquote').first().find('p').eq(1).html();
+    if (blockquoteText) {
+        blockquoteText = blockquoteText.replace(/<br\s*\/?>/g, '\n').trim(); // Remplace <br> par \n
+        blockquoteText = he.decode(blockquoteText); // Décodage des caractères HTML
+    }
+    res.write('----------------------------------------\n' + blockquoteText + '\n----------------------------------------\n');
+    res.end();
+});
+
 
 // Lancer le serveur
 const PORT = 8080;
