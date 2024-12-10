@@ -155,11 +155,12 @@ app.get('/epiquote' , async (req, res) => {
     const $ = cheerio.load(data);
 
     let blockquoteText = $('blockquote').first().find('p').eq(1).html();
+    let people = $('blockquote').first().find('p').first().text().trim();
     if (blockquoteText) {
         blockquoteText = blockquoteText.replace(/<br\s*\/?>/g, '\n').trim(); // Remplace <br> par \n
         blockquoteText = he.decode(blockquoteText); // Décodage des caractères HTML
     }
-    res.write('----------------------------------------\n' + blockquoteText + '\n----------------------------------------\n');
+    res.write('----------------------------------------\n' + blockquoteText + '\n\n\t    ' + people + '\n----------------------------------------\n');
     res.end();
 });
 
