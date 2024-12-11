@@ -14,6 +14,12 @@ epita(app);
 const epiquote = require('./ascii/epiquote.js');
 epiquote(app, axios, cheerio, he);
 
+const h4ck3r = require('./ascii/h4ck3r.js');
+h4ck3r(app);
+
+const help = require('./ascii/help.js');
+help(app);
+
 // Lancer le serveur
 const PORT = 8080;
 app.listen(PORT, () => {
